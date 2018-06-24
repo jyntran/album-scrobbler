@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Album } from '../models';
+import { Mocks } from '../mocks/mocks';
 
 @Component({
   selector: 'album-root',
@@ -12,5 +13,8 @@ export class AlbumComponent implements OnInit {
 
 	constructor() {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.album = Mocks.album;
+		console.log(this.album)
+	}
 }

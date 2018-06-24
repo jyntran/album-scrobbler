@@ -17,5 +17,12 @@ export class SearchService {
   	}
   	return this.http.get(itunesURL, {headers: headers});
   }
+
+  findVGMDbAlbum(url: string) {
+    let match = url.match(Regex.vgmdb);
+    let id = match[5];
+    let vgmdbURL = 'http://vgmdb.info/album/' + id;
+    return this.http.get(vgmdbURL);
+  }
 }
 

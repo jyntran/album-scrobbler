@@ -1,18 +1,22 @@
 <div class="box">
-	<div class="field">
-	  <label class="label">
-	  	Language
-		</label>
-		<div class="select">
-		  <select>
-		    <option>English</option>
-		    <option>Japanese</option>
-		  </select>
+	<form #scrobbleForm="ngForm"
+		(ngSubmit)="onScrobble()">
+		<div class="field">
+		  <label class="label">
+		  	Language
+			</label>
+			<div class="select">
+			  <select
+			    name="language"
+			    [ngModel]="language">
+			    <option *ngFor="let language of languages" [value]="language.code">{{language.name}}</option>
+			  </select>
+			</div>
 		</div>
-	</div>
-	<div class="field">
-	  <div class="control">
-		  <button class="button is-link">Scrobble</button>
+		<div class="field">
+		  <div class="control">
+			  <button class="button is-link">Scrobble entire album</button>
+			</div>
 		</div>
-	</div>
+	</form>
 </div>

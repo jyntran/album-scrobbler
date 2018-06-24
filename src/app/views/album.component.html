@@ -1,19 +1,39 @@
 <section class="section" *ngIf="album">
-	<div class="container">
-		<h3 class="title is-3">{{album.name}}</h3>
-		<div class="container" *ngIf="album.artwork">
-			<figure class="image is-128x128">
-			  <img src="{{album.artwork}}">
-			</figure>
-		</div>
-		<div class="container">
-			<div class="container" *ngFor="let disc of album.discs">
-				<h4 class="title is-5">Disc {{disc.number}}</h4>
-				<ol class="tracklist">
-					<li *ngFor="let track of disc.tracks">
-						{{track.name}} - {{track.artist}}
-					</li>
-				</ol>
+	<div class="container album-info">
+		<div class="columns">
+			<div class="column is-one-quarter" *ngIf="album.artwork">
+				<figure class="image is-1by1">
+				  <img src="{{album.artwork}}">
+				</figure>
+			</div>
+			<div class="column is-two-thirds">
+				<h3 class="title is-3">{{album.name}}</h3>
+				<h4 class="subtitle">{{album.artist}}</h4>
+				<div *ngFor="let disc of album.discs">
+				  <button class="button is-link"
+					*ngIf="album.discs.length > 1">
+					Scrobble disc</button>
+					<h4 class="title is-5" *ngIf="album.discs.length > 1">Disc {{disc.number}}</h4>
+					<table class="table is-fullwidth is-hoverable">
+						<thead>
+							<th></th>
+							<th>#</th>
+							<th>Track</th>
+							<th>Artist</th>
+						</thead>
+						<tbody>
+							<tr *ngFor="let track of disc.tracks"
+							class="track">
+								<td class="scrobble-cell">
+								  <button class="button is-link is-small">Scrobble</button>
+								</td>
+								<td class="track-number-cell">{{track.number}}.</td>
+								<td><span class="track-name">{{track.name}}</span></td>
+								<td class="artist-cell"><span class="artist-name">{{track.artist}}</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

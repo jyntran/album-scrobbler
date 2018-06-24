@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { Album, Disc, Track } from '../models';
 import { Regex } from '../constants/regex';
@@ -9,13 +9,27 @@ import { Regex } from '../constants/regex';
   providers: [SearchService]
 })
 
-export class SearchComponent {
+export class SearchComponent implements OnInit{
+	sites = [
+		'iTunes', 'VGMDb'
+	];
+	currentSite = 'iTunes';
 	url: string = "";
 	album: Album;
+
+	error: string;
 
 	constructor(
 		private searchService: SearchService
 	) {}
+
+	ngOnInit() {
+		this.currentSite = 'iTunes';
+	}
+
+	onSiteSwitch(newSite: string) {
+		this.currentSite = newSite;
+	}
 
 	onChange(newVal: string) {
 		this.url = newVal;
@@ -25,18 +39,36 @@ export class SearchComponent {
 		this.findAlbum(this.url);
 	}
 
+	clearError() {
+		this.error = '';
+	}
+
 	isITunes(host: string) {
-		return host == 'itunes.apple.com';
+		return this.currentSite == 'iTunes'
+			&& host == 'itunes.apple.com';
+	}
+
+	isVGMDb(host: string) {
+		return this.currentSite == 'VGMDb'
+			&& host == 'vgmdb.net';
 	}
 
 	private findAlbum(url: string){
-  	let host = url.match(Regex.hostname)[1];
-  	if (this.isITunes(host)) {
-  		this.searchService.findITunesAlbum(this.url)
+		let host = url.match(Regex.hostname)[1];
+		if (this.isITunes(host)) {
+  		this.searchService.findITunesAlbum(url)
   			.subscribe((data: any) => {
 	  			this.album = this.createITunesAlbum(data.results);
-  		})
-  	}
+	  		})
+		} else if (this.isVGMDb(host)) {
+  		this.searchService.findVGMDbAlbum(url)
+  			.subscribe((data: any) => {
+  				console.log(data);
+	  			this.album = this.createVGMDBAlbum(data); //TODO
+	  		})
+		} else {
+			this.error = "Error: URL is invalid";
+		}
 	}
 
   private createITunesAlbum(albumData: any) {
@@ -46,8 +78,21 @@ export class SearchComponent {
 		let discs = this.createDiscs(albumData);
   	return new Album({
   		name: album.collectionName,
+  		artist: album.artistName,
   		discs: discs,
   		artwork: album.artworkUrl100
+  	});
+  }
+
+  private createVGMDBAlbum(albumData: any) {
+  	let album = albumData.filter((obj) => {
+			return obj.wrapperType == 'collection';
+		})[0];
+		let discs = this.createDiscs(albumData);
+  	return new Album({
+  		name: 'todo',
+  		discs: [],
+  		artwork: 'https://placeimg.com/100/100/arch?t=1529860719960'
   	});
   }
 

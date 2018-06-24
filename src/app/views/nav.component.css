@@ -1,0 +1,15 @@
+.navbar
+{
+	border-bottom: thin solid #666;
+}
+
+.navbar-left,
+.navbar-right 
+{
+	padding: 1.5em 1.5em .5em 1.5em;
+}
+
+.navbar-right
+{
+	text-align: right;
+}
