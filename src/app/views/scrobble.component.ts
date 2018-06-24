@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'scrobble-root',
   templateUrl: './scrobble.component.html',
 })
 
-export class ScrobbleComponent implements OnInit {
+export class ScrobbleComponent {
 
 	constructor() {}
 
-	ngOnInit() {}
 }
