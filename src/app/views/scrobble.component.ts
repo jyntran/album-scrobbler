@@ -6,7 +6,24 @@ import { Component } from '@angular/core';
 })
 
 export class ScrobbleComponent {
+	language: string = 'Language';
+	languages = [
+		{
+			name: 'English',
+			code: 'en_us'
+		},
+		{
+			name: 'Japanese',
+			code: 'ja_jp'
+		},
+	]
 
 	constructor() {}
+
+	onScrobble() {alert('scrobble')}
+
+	onScrobbleSingle() {}
+
+	onScrobbleDisc() {}
 
 }

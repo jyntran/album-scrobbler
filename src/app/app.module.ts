@@ -7,6 +7,7 @@ import { routing, appRoutingProviders } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './views/auth.component';
 import { MainComponent } from './views/main.component';
+import { NavComponent } from './views/nav.component';
 import { UserComponent } from './views/user.component';
 import { AlbumComponent } from './views/album.component';
 import { SearchComponent } from './views/search.component';
@@ -19,6 +20,7 @@ import { MD5Service } from './services/md5.service';
     AppComponent,
     AuthComponent,
     MainComponent,
+    NavComponent,
     UserComponent,
     AlbumComponent,
     ScrobbleComponent,

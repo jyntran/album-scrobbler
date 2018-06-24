@@ -1,7 +1,30 @@
-ol.tracklist,
-ul.tracklist
+div.album-info
 {
-	margin-bottom: 1.5em;
-	margin-left: 1em;
-	padding: 0.5em;
+	margin-bottom: 4em;
 }
+
+.table th,
+.table td
+{
+	vertical-align: middle;
+}
+
+td.scrobble-cell
+{
+	width: 96px;
+}
+
+td.track-number-cell
+{
+	width: 48px;
+}
+
+td.artist-cell
+{
+	width: 33%;
+}
+
+.track span.artist-name
+{
+}
+

@@ -3,7 +3,9 @@ import { Album, Disc, Track } from '../models';
 export class Mocks {
 	public static album =
 		new Album({
-			name: 'test',
+			name: 'test name',
+			artist: 'test artist',
+			artwork: 'https://placeimg.com/100/100/arch',
 			discs: [
 			new Disc({
 				number: 1,
@@ -17,20 +19,6 @@ export class Mocks {
 						name: 'two',
 						number: 2,
 						artist: 'artist2'
-					})
-				]}),
-			new Disc({
-				number: 2,
-				tracks: [
-					new Track({
-						name: 'three',
-						number: 1,
-						artist: 'artist3'
-					}),
-					new Track({
-						name: 'four',
-						number: 2,
-						artist: 'artist4'
 					})
 				]}),
 		]});
