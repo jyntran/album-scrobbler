@@ -7,7 +7,7 @@ export class AuthService {
 
   public isAuthenticated() {
     return localStorage.getItem('lastfm_album_scrobbler_sk') != null;
-  })
+  }
 
   public getSessionKey() {
     return localStorage.getItem('lastfm_album_scrobbler_sk');

@@ -1,8 +1,8 @@
 <div class="container">
-	<p *ngIf="username">
-		<a href="{{lastFmURL}}"  target="_blank"><strong>{{username}}</strong></a> (<a href="auth/logout">log out</a>)
+	<p *ngIf="getUsername()">
+		<a href="{{lastFmURL}}" target="_blank"><strong>{{getUsername()}}</strong></a> (<a href="auth/logout">log out</a>)
 	</p>
-	<p *ngIf="!username">
+	<p *ngIf="!getUsername()">
 		Not logged in (<a href="auth/login">log in</a>)
 	</p>
 </div>

@@ -18,6 +18,20 @@ export class Mocks {
 						number: 2,
 						artist: 'artist2'
 					})
-				]})
+				]}),
+			new Disc({
+				number: 2,
+				tracks: [
+					new Track({
+						name: 'three',
+						number: 1,
+						artist: 'artist3'
+					}),
+					new Track({
+						name: 'four',
+						number: 2,
+						artist: 'artist4'
+					})
+				]}),
 		]});
 }

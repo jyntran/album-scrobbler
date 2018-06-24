@@ -22,4 +22,8 @@ export class UserComponent implements OnInit {
 			this.lastFmURL = this.lastFmBaseURL + this.username;
 		}
 	}
+
+	getUsername() {
+		return this.authService.getUsername();
+	}
 }
