@@ -63,8 +63,7 @@ export class SearchComponent implements OnInit{
 		} else if (this.isVGMDb(host)) {
   		this.searchService.findVGMDbAlbum(url)
   			.subscribe((data: any) => {
-  				console.log(data);
-	  			this.album = this.createVGMDBAlbum(data); //TODO
+	  			this.album = this.createVGMDBAlbum(data);
 	  		})
 		} else {
 			this.error = "Error: URL is invalid";
@@ -75,7 +74,7 @@ export class SearchComponent implements OnInit{
   	let album = albumData.filter((obj) => {
 			return obj.wrapperType == 'collection';
 		})[0];
-		let discs = this.createDiscs(albumData);
+	let discs = this.createiTunesDiscs(albumData);
   	return new Album({
   		name: album.collectionName,
   		artist: album.artistName,
@@ -85,18 +84,24 @@ export class SearchComponent implements OnInit{
   }
 
   private createVGMDBAlbum(albumData: any) {
-  	let album = albumData.filter((obj) => {
-			return obj.wrapperType == 'collection';
-		})[0];
-		let discs = this.createDiscs(albumData);
+	let discs = this.createVGMDbDiscs(albumData);
+	let langTitle = Object.keys(albumData.names);
+	let langTrack = this.getTrackLanguages(albumData);
   	return new Album({
-  		name: 'todo',
-  		discs: [],
-  		artwork: 'https://placeimg.com/100/100/arch?t=1529860719960'
+  		name: albumData.name,
+  		discs: discs,
+  		artwork: albumData.picture_full,
+  		langTitle: langTitle,
+  		langTrack: langTrack
   	});
   }
 
-  private createDiscs(albumData: any) {
+  private getTrackLanguages(albumData: any) {
+  	let obj = albumData.discs[0].tracks[0].names;
+  	return Object.keys(obj);
+  }
+
+  private createiTunesDiscs(albumData: any) {
 		let discs = [];
 		let discCount = albumData.length > 1 ? albumData[1].discCount : 1;
 		for (var i = 1; i <= discCount; i++) {
@@ -119,5 +124,27 @@ export class SearchComponent implements OnInit{
 			discs.push(disc);
 		}
 		return discs;
+  }
+
+  private createVGMDbDiscs(albumData: any) {
+	let discs = [];
+	let discCount = albumData.discs.length;
+	albumData.discs.forEach((d, i) => {
+		var tracks = [];
+		d.tracks.forEach((t, i) => {
+			let track = new Track({
+				name: t.names['English'] || t.names['Japanese'],
+				number: i+1,
+				artist: 'Various Artists',
+			});
+			tracks.push(track);
+		})
+		let disc = new Disc({
+			number: i+1,
+			tracks: tracks
+		});
+		discs.push(disc);
+	})
+	return discs;
   }
 }

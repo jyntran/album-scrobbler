@@ -10,22 +10,20 @@
 				<h3 class="title is-3">{{album.name}}</h3>
 				<h4 class="subtitle">{{album.artist}}</h4>
 				<div *ngFor="let disc of album.discs">
-				  <button class="button is-link"
-					*ngIf="album.discs.length > 1">
-					Scrobble disc</button>
-					<h4 class="title is-5" *ngIf="album.discs.length > 1">Disc {{disc.number}}</h4>
 					<table class="table is-fullwidth is-hoverable">
-						<thead>
+						<thead *ngIf="album.discs.length > 1">
+							<th><button class="button is-small is-primary">
+					Scrobble</button></th>
 							<th></th>
-							<th>#</th>
-							<th>Track</th>
-							<th>Artist</th>
+							<th>Disc {{disc.number}}</th>
+							<th></th>
 						</thead>
 						<tbody>
 							<tr *ngFor="let track of disc.tracks"
 							class="track">
 								<td class="scrobble-cell">
-								  <button class="button is-link is-small">Scrobble</button>
+								  <button class="button is-small is-primary"
+								  (click)="scrobbleSingle(track)">Scrobble</button>
 								</td>
 								<td class="track-number-cell">{{track.number}}.</td>
 								<td><span class="track-name">{{track.name}}</span></td>
@@ -37,5 +35,8 @@
 			</div>
 		</div>
 	</div>
-	<scrobble-root></scrobble-root>
+	<scrobble-root
+	[langTitle]="album.langTitle"
+	[langTrack]="album.langTrack">
+	</scrobble-root>
 </section>

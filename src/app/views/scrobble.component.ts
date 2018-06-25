@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'scrobble-root',
@@ -17,6 +17,12 @@ export class ScrobbleComponent {
 			code: 'ja_jp'
 		},
 	]
+
+	@Input() langTitle: Array<string> = ['en', 'ja', 'ja-latn']
+	@Input() langTrack: Array<string> = ['English', 'Japanese'];
+
+	currentLangTitle: string;
+	currentLangTrack: string;
 
 	constructor() {}
 

@@ -13,6 +13,8 @@ import { AlbumComponent } from './views/album.component';
 import { SearchComponent } from './views/search.component';
 import { ScrobbleComponent } from './views/scrobble.component';
 
+import { AuthService } from './services/auth.service';
+import { LastFmService } from './services/lastfm.service';
 import { MD5Service } from './services/md5.service';
 
 @NgModule({
@@ -35,6 +37,8 @@ import { MD5Service } from './services/md5.service';
   providers: [
   	appRoutingProviders,
   	MD5Service,
+    LastFmService,
+    AuthService,
   ],
   bootstrap: [AppComponent]
 })
