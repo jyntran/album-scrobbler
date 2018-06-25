@@ -3,19 +3,31 @@
 		(ngSubmit)="onScrobble()">
 		<div class="field">
 		  <label class="label">
-		  	Language
+		  	Album Title Language
 			</label>
 			<div class="select">
 			  <select
-			    name="language"
-			    [ngModel]="language">
-			    <option *ngFor="let language of languages" [value]="language.code">{{language.name}}</option>
+			    name="currentLangTitle"
+			    [ngModel]="currentLangTitle">
+			    <option *ngFor="let lang of langTitle" [value]="lang">{{lang}}</option>
+			  </select>
+			</div>
+		</div>
+		<div class="field">
+		  <label class="label">
+		  	Track Name Language
+			</label>
+			<div class="select">
+			  <select
+			    name="currentLangTrack"
+			    [ngModel]="currentLangTrack">
+			    <option *ngFor="let lang of langTrack" [value]="lang">{{lang}}</option>
 			  </select>
 			</div>
 		</div>
 		<div class="field">
 		  <div class="control">
-			  <button class="button is-link">Scrobble entire album</button>
+			  <button class="button is-primary">Scrobble entire album</button>
 			</div>
 		</div>
 	</form>

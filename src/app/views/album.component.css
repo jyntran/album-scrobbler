@@ -3,6 +3,11 @@ div.album-info
 	margin-bottom: 4em;
 }
 
+.table
+{
+	margin: 3em auto;
+}
+
 .table th,
 .table td
 {

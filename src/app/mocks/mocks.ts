@@ -5,6 +5,8 @@ export class Mocks {
 		new Album({
 			name: 'test name',
 			artist: 'test artist',
+			langTitle: ['en', 'ja'],
+			langTrack: ['English', 'Japanese'],
 			artwork: 'https://placeimg.com/100/100/arch',
 			discs: [
 			new Disc({
@@ -21,5 +23,7 @@ export class Mocks {
 						artist: 'artist2'
 					})
 				]}),
+
 		]});
+
 }
