@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Album, Disc, Track } from '../models';
 import { ScrobbleService } from '../services/scrobble.service';
-import { Mocks } from '../mocks/mocks';
 
 @Component({
   selector: 'album-root',
@@ -18,7 +17,6 @@ export class AlbumComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.album = Mocks.album2;
 	}
 
 	scrobbleSingle(track: Track) {

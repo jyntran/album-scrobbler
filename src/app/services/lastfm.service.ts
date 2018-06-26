@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { MD5Service } from './md5.service';
 import { AuthService } from './auth.service';
 import { Album, Disc, Track } from '../models';
@@ -53,21 +53,18 @@ export class LastFmService {
       'timestamp': timestamp,
       'track': track.name,
     };
-    params['api_sig'] = this.getSignature(method, params);
-    params['format'] = 'json';
-    let _params = [];
-    for (var param in params) {
-      _params.push(encodeURIComponent(param) + "="
-        + encodeURIComponent(params[param]));
-    }
-    let _data = _params.join('&');
+    let signature = this.getSignature(method, params);
+    let httpParams = new HttpParams()
+    .set("api_key", this.apiKey)
+    .set("artist", track.artist)
+    .set("method", method)
+    .set("sk", this.authService.getSessionKey())
+    .set("timestamp", timestamp.toString())
+    .set("track", track.name)
+    .set("api_sig", this.getSignature(method, params))
+    .set("format", "json");
     let url = this.apiURL;
-    let options = {
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-      }
-    }
-    return this.http.post(url, _data, options);
+    return this.http.post(url, httpParams);
   }
 
   getSignature(method: string, params: Object) {
@@ -78,7 +75,7 @@ export class LastFmService {
     }
     for (var i in keys.sort()) {
       key = keys[i];
-      signature += key + params[key];
+      signature += key + unescape(encodeURIComponent(params[key]));
     }
     signature += this.apiSecret;
     return this.md5(signature);
