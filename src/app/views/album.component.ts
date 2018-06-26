@@ -18,7 +18,7 @@ export class AlbumComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.album = Mocks.album;
+		this.album = Mocks.album2;
 	}
 
 	scrobbleSingle(track: Track) {

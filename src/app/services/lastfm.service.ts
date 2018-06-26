@@ -43,35 +43,44 @@ export class LastFmService {
   }
 
   scrobble(track: Track) {
-    let timestamp = Date.now().toString();
+    let timestamp = Math.floor(Date.now()/1000);
     let method = 'track.scrobble';
     let params = {
       'api_key': this.apiKey,
       'artist': track.artist,
+      'method': method,
       'sk': this.authService.getSessionKey(),
       'timestamp': timestamp,
       'track': track.name,
     };
     let signature = this.getSignature(method, params);
     params['api_sig'] = signature;
-    let url = this.apiURL
-      + "?method=" + method
-      + "&api_key=" + this.apiKey
-      + "&api_sig=" + signature
-      + "&sk=" + this.authService.getSessionKey()
-      + "&track=" + track.name
-      + "&artist=" + track.artist
-      + "&timestamp=" + timestamp
-      + "&format=json";
-    return this.http.post(url, params);
+    params['format'] = 'json';
+    let _params = [];
+    for (var param in params) {
+      _params.push(encodeURIComponent(param) + "="
+        + encodeURIComponent(params[param]));
+    }
+    let _data = _params.join('&');
+    let url = this.apiURL;
+    let options = {
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+      }
+    }
+    return this.http.post(url, _data, options);
   }
 
   getSignature(method: string, params: Object) {
     let signature = "";
-    let keys = Reflect.ownKeys(params);
-    keys.forEach((key) => {
-      signature += key.toString() + params[key];
-    })
+    let keys = [];
+    for (var key in params) {
+      keys.push(key);
+    }
+    for (var i in keys.sort()) {
+      key = keys[i];
+      signature += key + encodeURIComponent(params[key]);
+    }
     signature += this.apiSecret;
     return this.md5(signature);
   }

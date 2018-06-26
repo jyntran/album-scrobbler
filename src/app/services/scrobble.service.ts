@@ -10,7 +10,6 @@ export class ScrobbleService {
 	) {}
   
   onScrobble(track: Track) {
-  	console.log(track);
   	this.lastFmService.scrobble(track)
   	.subscribe((data: any) => {
   		console.log(data)
