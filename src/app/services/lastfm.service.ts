@@ -53,8 +53,7 @@ export class LastFmService {
       'timestamp': timestamp,
       'track': track.name,
     };
-    let signature = this.getSignature(method, params);
-    params['api_sig'] = signature;
+    params['api_sig'] = this.getSignature(method, params);
     params['format'] = 'json';
     let _params = [];
     for (var param in params) {
@@ -79,7 +78,7 @@ export class LastFmService {
     }
     for (var i in keys.sort()) {
       key = keys[i];
-      signature += key + encodeURIComponent(params[key]);
+      signature += key + params[key];
     }
     signature += this.apiSecret;
     return this.md5(signature);
