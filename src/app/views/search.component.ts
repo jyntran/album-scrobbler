@@ -90,7 +90,7 @@ export class SearchComponent implements OnInit{
   	return new Album({
   		name: albumData.name,
   		discs: discs,
-  		artwork: albumData.picture_full,
+  		artwork: albumData.picture_thumb,
   		langTitle: langTitle,
   		langTrack: langTrack
   	});
