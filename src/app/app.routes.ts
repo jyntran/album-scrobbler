@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthComponent } from './views/auth.component';
-import { MainComponent } from './views/main.component';
+import { AuthComponent } from './components/auth.component';
+import { MainComponent } from './components/main.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },

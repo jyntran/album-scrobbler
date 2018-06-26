@@ -4,15 +4,28 @@ import { Album, Disc, Track } from '../models';
 
 @Injectable()
 export class ScrobbleService {
+  success: string;
+  error: string;
 
   constructor(
   	private lastFmService: LastFmService
 	) {}
+
+  clearError() {
+    this.success = '';
+    this.error = '';
+  }
   
   onScrobble(track: Track) {
   	this.lastFmService.scrobble(track)
-  	.subscribe((data: any) => {
-  		console.log(data)
-  	})
+  	.subscribe(
+      result => {
+  		  //console.log(result)
+        this.success = '"' + track.name + '" by ' + track.artist + ' was successfully scrobbled!';
+      },
+      error  => {
+        this.error = "Error: " + error;
+      }
+    )
   }
 }
