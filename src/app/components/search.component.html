@@ -44,7 +44,6 @@
 			<div class="field">
 			  <label class="label">
 			  	Album Title Language
-				</label>
 				<div class="select">
 				  <select
 				    name="currentLangTitle"
@@ -53,11 +52,11 @@
 				    <option *ngFor="let lang of album.langTitle" [value]="lang">{{lang}}</option>
 				  </select>
 				</div>
+			  </label>
 			</div>
 			<div class="field">
 			  <label class="label">
 			  	Track Name Language
-				</label>
 				<div class="select">
 				  <select
 				    name="currentLangTrack"
@@ -66,10 +65,24 @@
 				    <option *ngFor="let lang of album.langTrack" [value]="lang">{{lang}}</option>
 				  </select>
 				</div>
+			  </label>
+			</div>
+			<div class="field">
+			  <label class="label">
+			  	Artist Name Language
+				<div class="select">
+				  <select
+				    name="currentLangArtist"
+				    [ngModel]="currentLangArtist"
+				    (ngModelChange)="onLangArtistChange($event)">
+				    <option *ngFor="let lang of album.langArtist" [value]="lang">{{lang}}</option>
+				  </select>
+				</div>
+			  </label>
 			</div>
 			<div class="field">
 			  <div class="control">
-				  <button class="button is-primary">Scrobble entire album</button>
+				  <button disabled class="button is-primary">Scrobble entire album</button>
 				</div>
 			</div>
 		</form>
@@ -79,5 +92,6 @@
 	[album]="album"
 	[currentLangTitle]="currentLangTitle"
 	[currentLangTrack]="currentLangTrack"
+	[currentLangArtist]="currentLangArtist"
 	></album-root>
 </section>

@@ -19,8 +19,10 @@ export class SearchComponent implements OnInit{
 
 	@Input() langTitle: Array<string> = []
 	@Input() langTrack: Array<string> = [];
+	@Input() langArtist: Array<string> = [];
 	currentLangTitle: string;
 	currentLangTrack: string;
+	currentLangArtist: string;
 
 	isLoading: boolean = false;
 	error: string;
@@ -47,6 +49,10 @@ export class SearchComponent implements OnInit{
 
 	onLangTrackChange(newVal: string) {
 		this.currentLangTrack = newVal;
+	}
+
+	onLangArtistChange(newVal: string) {
+		this.currentLangArtist = newVal;
 	}
 
 	onSearch() {
@@ -77,6 +83,7 @@ export class SearchComponent implements OnInit{
 		  			this.album = this.createITunesAlbum(data.results);
 		  			this.currentLangTitle = this.album.langTitle[0];
 		  			this.currentLangTrack = this.album.langTrack[0];
+		  			this.currentLangArtist = this.album.langArtist[0];
 		  		}, error => {
 		  			this.error = error;
 		  		}, () => {
@@ -88,6 +95,7 @@ export class SearchComponent implements OnInit{
 		  			this.album = this.createVGMDBAlbum(data);
 		  			this.currentLangTitle = this.album.langTitle[0];
 		  			this.currentLangTrack = this.album.langTrack[0];
+		  			this.currentLangArtist = this.album.langArtist[0];
 		  		}, error => {
 		  			this.error = error;
 		  		}, () => {
@@ -106,19 +114,22 @@ export class SearchComponent implements OnInit{
 	let discs = this.createiTunesDiscs(albumData, album.country);
 	let name = {};
 	name[album.country] = album.collectionName;
-	let langTitle = [album.country];
+	let lang = [album.country];
   	return new Album({
   		name: name,
   		artist: album.artistName,
   		discs: discs,
   		artwork: album.artworkUrl100,
-  		langTitle: langTitle,
-  		langTrack: langTitle
+  		langTitle: lang,
+  		langTrack: lang,
+  		langArtist: lang
   	});
   }
 
   private createVGMDBAlbum(albumData: any) {
-	let discs = this.createVGMDbDiscs(albumData);
+	let artistName = this.getArtistName(albumData);
+	let langArtist = Object.keys(artistName);
+  	let discs = this.createVGMDbDiscs(albumData, artistName);
 	let langTitle = Object.keys(albumData.names);
 	let langTrack = this.getTrackLanguages(albumData);
 	let name = {};
@@ -130,7 +141,8 @@ export class SearchComponent implements OnInit{
   		discs: discs,
   		artwork: albumData.picture_thumb,
   		langTitle: langTitle,
-  		langTrack: langTrack
+  		langTrack: langTrack,
+  		langArtist: langArtist
   	});
   }
 
@@ -148,12 +160,14 @@ export class SearchComponent implements OnInit{
 			});
 			var tracks = [];
 			trackData.forEach((t) => {
-				let name = {};
-				name[lang] = t.trackName;
+				let trackName = {};
+				trackName[lang] = t.trackName;
+				let artistName = {};
+				artistName[lang] = t.artistName;
 				let track = new Track({
-					name: name,
+					name: trackName,
 					number: t.trackNumber,
-					artist: t.artistName,
+					artist: artistName,
 				});
 				tracks.push(track);
 			});
@@ -166,7 +180,7 @@ export class SearchComponent implements OnInit{
 		return discs;
   }
 
-  private createVGMDbDiscs(albumData: any) {
+  private createVGMDbDiscs(albumData: any, artist: Object) {
 	let discs = [];
 	let discCount = albumData.discs.length;
 	albumData.discs.forEach((d, i) => {
@@ -175,7 +189,7 @@ export class SearchComponent implements OnInit{
 			let track = new Track({
 				name: t.names,
 				number: i+1,
-				artist: 'Various Artists',
+				artist: artist,
 			});
 			tracks.push(track);
 		})
@@ -186,5 +200,35 @@ export class SearchComponent implements OnInit{
 		discs.push(disc);
 	})
 	return discs;
+  }
+
+  private getArtistName(data: any) {
+  	if ('performers' in data
+  		&& data.performers.length > 0) {
+  		return data.performers[0].names;
+  	}
+  	if ('composers' in data
+  		&& data.composers.length > 0) {
+  		return data.composers[0].names;
+  	}
+  	if ('arrangers' in data
+  		&& data.arrangers.length > 0) {
+  		return data.arrangers[0].names;
+  	}
+  	if ('lyricists' in data
+  		&& data.lyricists.length > 0) {
+  		return data.lyricists[0].names;
+  	}
+  	if ('publisher' in data) {
+  		return data.publisher.names;
+  	}
+  	if ('organizations' in data
+  		&& data.organizations.length > 0) {
+  		return data.organizations[0].names;
+  	}
+  	if ('distributor' in data) {
+  		return data.distributor.names;
+  	}
+  	return data.names; // if all else fails
   }
 }
