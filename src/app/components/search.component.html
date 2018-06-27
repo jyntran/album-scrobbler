@@ -32,9 +32,52 @@
 		  <div class="field">
 			  <div class="control">
 				  <button class="button is-primary">Search</button>
+				  <span class="is-loading" *ngIf="isLoading">Working...</span>
 				</div>
 			</div>
 		</form>
+
+		<form *ngIf="album"
+			#scrobbleForm="ngForm"
+			(ngSubmit)="onScrobble()">
+			<hr>
+			<div class="field">
+			  <label class="label">
+			  	Album Title Language
+				</label>
+				<div class="select">
+				  <select
+				    name="currentLangTitle"
+				    [ngModel]="currentLangTitle"
+				    (ngModelChange)="onLangTitleChange($event)">
+				    <option *ngFor="let lang of album.langTitle" [value]="lang">{{lang}}</option>
+				  </select>
+				</div>
+			</div>
+			<div class="field">
+			  <label class="label">
+			  	Track Name Language
+				</label>
+				<div class="select">
+				  <select
+				    name="currentLangTrack"
+				    [ngModel]="currentLangTrack"
+				    (ngModelChange)="onLangTrackChange($event)">
+				    <option *ngFor="let lang of album.langTrack" [value]="lang">{{lang}}</option>
+				  </select>
+				</div>
+			</div>
+			<div class="field">
+			  <div class="control">
+				  <button class="button is-primary">Scrobble entire album</button>
+				</div>
+			</div>
+		</form>
+
 	</div>
-	<album-root [album]="album"></album-root>
+	<album-root
+	[album]="album"
+	[currentLangTitle]="currentLangTitle"
+	[currentLangTrack]="currentLangTrack"
+	></album-root>
 </section>

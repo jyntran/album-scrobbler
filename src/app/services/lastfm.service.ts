@@ -51,7 +51,7 @@ export class LastFmService {
       'method': method,
       'sk': this.authService.getSessionKey(),
       'timestamp': timestamp,
-      'track': track.name,
+      'track': track.name[Object.keys(track.name)[0]]
     };
     let signature = this.getSignature(method, params);
     let httpParams = new HttpParams()
@@ -60,7 +60,7 @@ export class LastFmService {
     .set("method", method)
     .set("sk", this.authService.getSessionKey())
     .set("timestamp", timestamp.toString())
-    .set("track", track.name)
+    .set("track", track.name[Object.keys(track.name)[0]])
     .set("api_sig", this.getSignature(method, params))
     .set("format", "json");
     let url = this.apiURL;

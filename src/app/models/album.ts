@@ -1,7 +1,7 @@
 import { Disc } from './';
 
 export class Album {
-  name: string;
+  name: Object;
   artist: string;
   discs: Array<Disc>;
   artwork: string;

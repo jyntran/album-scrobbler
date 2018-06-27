@@ -12,11 +12,22 @@ import { ScrobbleService } from '../services/scrobble.service';
 export class AlbumComponent implements OnInit {
 	@Input() album: Album;
 
+	@Input() currentLangTitle: string;
+	@Input() currentLangTrack: string;
+
 	constructor(
 		private scrobbleService: ScrobbleService
 	) {}
 
 	ngOnInit() {
+	}
+
+	getAlbumName(name: object) {
+		return name[this.currentLangTitle];
+	}
+
+	getTrackName(name: object) {
+		return name[this.currentLangTrack];
 	}
 
 	scrobbleSingle(track: Track) {

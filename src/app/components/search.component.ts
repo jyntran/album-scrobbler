@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { Album, Disc, Track } from '../models';
 import { Regex } from '../constants/regex';
@@ -17,6 +17,12 @@ export class SearchComponent implements OnInit{
 	url: string = "";
 	album: Album;
 
+	@Input() langTitle: Array<string> = []
+	@Input() langTrack: Array<string> = [];
+	currentLangTitle: string;
+	currentLangTrack: string;
+
+	isLoading: boolean = false;
 	error: string;
 
 	constructor(
@@ -33,6 +39,14 @@ export class SearchComponent implements OnInit{
 
 	onChange(newVal: string) {
 		this.url = newVal;
+	}
+
+	onLangTitleChange(newVal: string) {
+		this.currentLangTitle = newVal;
+	}
+
+	onLangTrackChange(newVal: string) {
+		this.currentLangTrack = newVal;
 	}
 
 	onSearch() {
@@ -54,19 +68,34 @@ export class SearchComponent implements OnInit{
 	}
 
 	private findAlbum(url: string){
+		this.clearError();
+		this.isLoading = true;
 		let host = url.match(Regex.hostname)[1];
 		if (this.isITunes(host)) {
-  		this.searchService.findITunesAlbum(url)
-  			.subscribe((data: any) => {
-	  			this.album = this.createITunesAlbum(data.results);
-	  		})
+	  		this.searchService.findITunesAlbum(url)
+	  			.subscribe((data: any) => {
+		  			this.album = this.createITunesAlbum(data.results);
+		  			this.currentLangTitle = this.album.langTitle[0];
+		  			this.currentLangTrack = this.album.langTrack[0];
+		  		}, error => {
+		  			this.error = error;
+		  		}, () => {
+		  			this.isLoading = false;
+		  		})
 		} else if (this.isVGMDb(host)) {
-  		this.searchService.findVGMDbAlbum(url)
-  			.subscribe((data: any) => {
-	  			this.album = this.createVGMDBAlbum(data);
-	  		})
+	  		this.searchService.findVGMDbAlbum(url)
+	  			.subscribe((data: any) => {
+		  			this.album = this.createVGMDBAlbum(data);
+		  			this.currentLangTitle = this.album.langTitle[0];
+		  			this.currentLangTrack = this.album.langTrack[0];
+		  		}, error => {
+		  			this.error = error;
+		  		}, () => {
+		  			this.isLoading = false;
+		  		})
 		} else {
 			this.error = "Error: URL is invalid";
+			this.isLoading = false;
 		}
 	}
 
@@ -74,12 +103,17 @@ export class SearchComponent implements OnInit{
   	let album = albumData.filter((obj) => {
 			return obj.wrapperType == 'collection';
 		})[0];
-	let discs = this.createiTunesDiscs(albumData);
+	let discs = this.createiTunesDiscs(albumData, album.country);
+	let name = {};
+	name[album.country] = album.collectionName;
+	let langTitle = [album.country];
   	return new Album({
-  		name: album.collectionName,
+  		name: name,
   		artist: album.artistName,
   		discs: discs,
-  		artwork: album.artworkUrl100
+  		artwork: album.artworkUrl100,
+  		langTitle: langTitle,
+  		langTrack: langTitle
   	});
   }
 
@@ -87,8 +121,12 @@ export class SearchComponent implements OnInit{
 	let discs = this.createVGMDbDiscs(albumData);
 	let langTitle = Object.keys(albumData.names);
 	let langTrack = this.getTrackLanguages(albumData);
+	let name = {};
+	langTitle.forEach((lang) => {
+		name[lang] = albumData.names[lang];
+	});
   	return new Album({
-  		name: albumData.name,
+  		name: name,
   		discs: discs,
   		artwork: albumData.picture_thumb,
   		langTitle: langTitle,
@@ -101,7 +139,7 @@ export class SearchComponent implements OnInit{
   	return Object.keys(obj);
   }
 
-  private createiTunesDiscs(albumData: any) {
+  private createiTunesDiscs(albumData: any, lang: string) {
 		let discs = [];
 		let discCount = albumData.length > 1 ? albumData[1].discCount : 1;
 		for (var i = 1; i <= discCount; i++) {
@@ -110,8 +148,10 @@ export class SearchComponent implements OnInit{
 			});
 			var tracks = [];
 			trackData.forEach((t) => {
+				let name = {};
+				name[lang] = t.trackName;
 				let track = new Track({
-					name: t.trackName,
+					name: name,
 					number: t.trackNumber,
 					artist: t.artistName,
 				});
@@ -133,7 +173,7 @@ export class SearchComponent implements OnInit{
 		var tracks = [];
 		d.tracks.forEach((t, i) => {
 			let track = new Track({
-				name: t.names['English'] || t.names['Japanese'],
+				name: t.names,
 				number: i+1,
 				artist: 'Various Artists',
 			});
