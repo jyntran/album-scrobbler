@@ -1,5 +1,5 @@
 export class Track {
-  name: string;
+  name: Object;
   number: number;
   artist: string;
 

@@ -12,6 +12,9 @@ export class SearchService {
   	let id = match[6];
   	let country = match[3];
   	let itunesURL = 'https://itunes.apple.com/lookup?id=' + id + '&entity=song&country=' + country;
+    if (country == 'jp') {
+      itunesURL += '&lang=ja_jp'
+    }
   	let headers = {
   		"Content-Type": "text/plain"
   	}

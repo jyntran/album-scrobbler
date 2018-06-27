@@ -7,7 +7,7 @@
 				</figure>
 			</div>
 			<div class="column is-two-thirds">
-				<h3 class="title is-3">{{album.name}}</h3>
+				<h3 class="title is-3">{{getAlbumName(album.name)}}</h3>
 				<h4 class="subtitle">{{album.artist}}</h4>
 				<div *ngFor="let disc of album.discs">
 					<table class="table is-fullwidth is-hoverable">
@@ -26,7 +26,7 @@
 								  (click)="scrobbleSingle(track)">Scrobble</button>
 								</td>
 								<td class="track-number-cell">{{track.number}}.</td>
-								<td><span class="track-name">{{track.name}}</span></td>
+								<td><span class="track-name">{{getTrackName(track.name)}}</span></td>
 								<td class="artist-cell"><span class="artist-name">{{track.artist}}</span></td>
 							</tr>
 						</tbody>
@@ -35,8 +35,4 @@
 			</div>
 		</div>
 	</div>
-	<scrobble-root
-	[langTitle]="album.langTitle"
-	[langTrack]="album.langTrack">
-	</scrobble-root>
 </section>
