@@ -114,14 +114,15 @@ export class SearchComponent implements OnInit{
 	let discs = this.createiTunesDiscs(albumData, album.country);
 	let name = {};
 	name[album.country] = album.collectionName;
-	let langTitle = [album.country];
+	let lang = [album.country];
   	return new Album({
   		name: name,
   		artist: album.artistName,
   		discs: discs,
   		artwork: album.artworkUrl100,
-  		langTitle: langTitle,
-  		langTrack: langTitle
+  		langTitle: lang,
+  		langTrack: lang,
+  		langArtist: lang
   	});
   }
 
