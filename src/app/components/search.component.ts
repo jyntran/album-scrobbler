@@ -129,8 +129,7 @@ export class SearchComponent implements OnInit{
   private createVGMDBAlbum(albumData: any) {
 	let artistName = this.getArtistName(albumData);
 	let langArtist = Object.keys(artistName);
-  	let discData = this.createVGMDbDiscs(albumData, artistName);
-	let discs = discData.discs;
+  	let discs = this.createVGMDbDiscs(albumData, artistName);
 	let langTitle = Object.keys(albumData.names);
 	let langTrack = this.getTrackLanguages(albumData);
 	let name = {};
@@ -182,7 +181,6 @@ export class SearchComponent implements OnInit{
   }
 
   private createVGMDbDiscs(albumData: any, artist: Object) {
-  	let langArtist = [];
 	let discs = [];
 	let discCount = albumData.discs.length;
 	albumData.discs.forEach((d, i) => {
@@ -201,10 +199,7 @@ export class SearchComponent implements OnInit{
 		});
 		discs.push(disc);
 	})
-	return {
-		discs: discs,
-		langArtist: langArtist
-	};
+	return discs;
   }
 
   private getArtistName(data: any) {
