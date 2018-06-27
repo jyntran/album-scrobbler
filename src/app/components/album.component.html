@@ -2,7 +2,7 @@
 	<div class="container album-info">
 		<div class="columns">
 			<div class="column is-one-quarter" *ngIf="album.artwork">
-				<figure class="image is-1by1">
+				<figure class="image">
 				  <img src="{{album.artwork}}">
 				</figure>
 			</div>
@@ -27,7 +27,7 @@
 								</td>
 								<td class="track-number-cell">{{track.number}}.</td>
 								<td><span class="track-name">{{getTrackName(track.name)}}</span></td>
-								<td class="artist-cell"><span class="artist-name">{{track.artist}}</span></td>
+								<td class="artist-cell"><span class="artist-name">{{getArtistName(track.artist)}}</span></td>
 							</tr>
 						</tbody>
 					</table>

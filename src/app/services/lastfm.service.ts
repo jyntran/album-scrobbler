@@ -47,7 +47,7 @@ export class LastFmService {
     let method = 'track.scrobble';
     let params = {
       'api_key': this.apiKey,
-      'artist': track.artist,
+      'artist': track.artist[Object.keys(track.artist)[0]],
       'method': method,
       'sk': this.authService.getSessionKey(),
       'timestamp': timestamp,
@@ -56,7 +56,7 @@ export class LastFmService {
     let signature = this.getSignature(method, params);
     let httpParams = new HttpParams()
     .set("api_key", this.apiKey)
-    .set("artist", track.artist)
+    .set("artist", track.artist[Object.keys(track.artist)[0]])
     .set("method", method)
     .set("sk", this.authService.getSessionKey())
     .set("timestamp", timestamp.toString())

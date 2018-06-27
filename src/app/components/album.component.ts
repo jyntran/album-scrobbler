@@ -14,6 +14,7 @@ export class AlbumComponent implements OnInit {
 
 	@Input() currentLangTitle: string;
 	@Input() currentLangTrack: string;
+	@Input() currentLangArtist: string;
 
 	constructor(
 		private scrobbleService: ScrobbleService
@@ -28,6 +29,10 @@ export class AlbumComponent implements OnInit {
 
 	getTrackName(name: object) {
 		return name[this.currentLangTrack];
+	}
+
+	getArtistName(name: object) {
+		return name[this.currentLangArtist];
 	}
 
 	scrobbleSingle(track: Track) {
