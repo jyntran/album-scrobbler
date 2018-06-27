@@ -42,28 +42,24 @@ export class LastFmService {
   	return this.http.get(url);
   }
 
-  scrobble(track: Track) {
-    let timestamp = Math.floor(Date.now()/1000);
+  scrobble(tracks: Array<Track>) {
     let method = 'track.scrobble';
+    let url = this.apiURL;
     let params = {
       'api_key': this.apiKey,
-      'artist': track.artist[Object.keys(track.artist)[0]],
       'method': method,
       'sk': this.authService.getSessionKey(),
-      'timestamp': timestamp,
-      'track': track.name[Object.keys(track.name)[0]]
     };
+    tracks.forEach((track, i) => {
+      let timestamp = Math.floor(Date.now()/1000);
+      params['artist['+i+']'] = track.artist;
+      params['timestamp['+i+']'] = timestamp;
+      params['track['+i+']'] = track.name[Object.keys(track.name)[0]];
+    });
     let signature = this.getSignature(method, params);
-    let httpParams = new HttpParams()
-    .set("api_key", this.apiKey)
-    .set("artist", track.artist[Object.keys(track.artist)[0]])
-    .set("method", method)
-    .set("sk", this.authService.getSessionKey())
-    .set("timestamp", timestamp.toString())
-    .set("track", track.name[Object.keys(track.name)[0]])
-    .set("api_sig", this.getSignature(method, params))
-    .set("format", "json");
-    let url = this.apiURL;
+    params['api_sig'] = signature;
+    params['format'] = 'json';
+    let httpParams = new HttpParams({fromObject: params});
     return this.http.post(url, httpParams);
   }
 
@@ -75,7 +71,7 @@ export class LastFmService {
     }
     for (var i in keys.sort()) {
       key = keys[i];
-      signature += key + unescape(encodeURIComponent(params[key]));
+      signature += unescape(encodeURIComponent(key)) + unescape(encodeURIComponent(params[key]));
     }
     signature += this.apiSecret;
     return this.md5(signature);

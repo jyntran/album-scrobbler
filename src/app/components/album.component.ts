@@ -36,14 +36,10 @@ export class AlbumComponent implements OnInit {
 	}
 
 	scrobbleSingle(track: Track) {
-		let name = {};
-		name[this.currentLangTrack] = this.getTrackName(track);
-		let artist = {};
-		artist[this.currentLangArtist] = this.getArtistName(track);
-		this.scrobbleService.onScrobble(new Track({
-			name: name,
-			artist: artist,
-			number: track.number
-		}));
+		this.scrobbleService.onScrobble([track]);
+	}
+
+	scrobbleDisc(disc: Disc) {
+		this.scrobbleService.onScrobble(disc.tracks);
 	}
 }
