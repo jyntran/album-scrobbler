@@ -52,7 +52,7 @@ export class LastFmService {
     };
     tracks.forEach((track, i) => {
       let timestamp = Math.floor(Date.now()/1000);
-      params['artist['+i+']'] = track.artist;
+      params['artist['+i+']'] = track.artist[Object.keys(track.artist)[0]];
       params['timestamp['+i+']'] = timestamp;
       params['track['+i+']'] = track.name[Object.keys(track.name)[0]];
     });

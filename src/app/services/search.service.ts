@@ -9,7 +9,7 @@ export class SearchService {
 
   findITunesAlbum(url: string) {
   	let match = url.match(Regex.itunes);
-  	let id = match[6];
+  	let id = match[5];
   	let country = match[3];
   	let itunesURL = 'https://itunes.apple.com/lookup?id=' + id + '&entity=song&country=' + country;
     if (country == 'jp') {
