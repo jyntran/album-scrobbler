@@ -14,6 +14,7 @@ export class AlbumComponent implements OnInit {
 
 	@Input() currentLangTitle: string;
 	@Input() currentLangTrack: string;
+	@Input() currentLangArtist: string;
 
 	constructor(
 		private scrobbleService: ScrobbleService
@@ -22,15 +23,27 @@ export class AlbumComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	getAlbumName(name: object) {
-		return name[this.currentLangTitle];
+	getAlbumName(album: Album) {
+		return album.name[this.currentLangTitle];
 	}
 
-	getTrackName(name: object) {
-		return name[this.currentLangTrack];
+	getTrackName(track: Track) {
+		return track.name[this.currentLangTrack];
+	}
+
+	getArtistName(track: Track) {
+		return track.artist[this.currentLangArtist];
 	}
 
 	scrobbleSingle(track: Track) {
-		this.scrobbleService.onScrobble(track);
+		let name = {};
+		name[this.currentLangTrack] = this.getTrackName(track);
+		let artist = {};
+		artist[this.currentLangArtist] = this.getArtistName(track);
+		this.scrobbleService.onScrobble(new Track({
+			name: name,
+			artist: artist,
+			number: track.number
+		}));
 	}
 }

@@ -2,12 +2,12 @@
 	<div class="container album-info">
 		<div class="columns">
 			<div class="column is-one-quarter" *ngIf="album.artwork">
-				<figure class="image is-1by1">
+				<figure class="image">
 				  <img src="{{album.artwork}}">
 				</figure>
 			</div>
 			<div class="column is-two-thirds">
-				<h3 class="title is-3">{{getAlbumName(album.name)}}</h3>
+				<h3 class="title is-3">{{getAlbumName(album)}}</h3>
 				<h4 class="subtitle">{{album.artist}}</h4>
 				<div *ngFor="let disc of album.discs">
 					<table class="table is-fullwidth is-hoverable">
@@ -26,8 +26,8 @@
 								  (click)="scrobbleSingle(track)">Scrobble</button>
 								</td>
 								<td class="track-number-cell">{{track.number}}.</td>
-								<td><span class="track-name">{{getTrackName(track.name)}}</span></td>
-								<td class="artist-cell"><span class="artist-name">{{track.artist}}</span></td>
+								<td><span class="track-name">{{getTrackName(track)}}</span></td>
+								<td class="artist-cell"><span class="artist-name">{{getArtistName(track)}}</span></td>
 							</tr>
 						</tbody>
 					</table>

@@ -7,6 +7,7 @@ export class Album {
   artwork: string;
   langTitle: Array<string>;
   langTrack: Array<string>;
+  langArtist: Array<string>;
 
   constructor(albumInfo: any) {
     this.name = albumInfo.name;
@@ -15,5 +16,6 @@ export class Album {
     this.artwork = albumInfo.artwork;
     this.langTitle = albumInfo.langTitle;
     this.langTrack = albumInfo.langTrack;
+    this.langArtist = albumInfo.langArtist;
   }
 }
