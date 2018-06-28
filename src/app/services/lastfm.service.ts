@@ -51,7 +51,7 @@ export class LastFmService {
       'sk': this.authService.getSessionKey(),
     };
     tracks.forEach((track, i) => {
-      let timestamp = Math.floor(Date.now()/1000);
+      let timestamp = Math.floor(Date.now()/1000) + i;
       params['artist['+i+']'] = track.artist[Object.keys(track.artist)[0]];
       params['timestamp['+i+']'] = timestamp;
       params['track['+i+']'] = track.name[Object.keys(track.name)[0]];
