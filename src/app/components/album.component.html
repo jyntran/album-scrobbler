@@ -7,34 +7,38 @@
 				</figure>
 			</div>
 			<div class="column is-two-thirds">
-				<h3 class="title is-3">{{getAlbumName(album)}}</h3>
-				<h4 class="subtitle">{{album.artist}}</h4>
-				<div *ngFor="let disc of album.discs">
-					<table class="table is-fullwidth is-hoverable">
-						<thead>
-						<!--<thead *ngIf="album.discs.length > 1">-->
-							<th><button class="button is-small is-primary"
-							(click)="scrobbleDisc(disc)">
-					Scrobble</button></th>
-							<th></th>
-							<th>Disc {{disc.number}}</th>
-							<th></th>
-						</thead>
-						<tbody>
-							<tr *ngFor="let track of disc.tracks"
-							class="track">
-								<td class="scrobble-cell">
-								  <button class="button is-small is-primary"
-								  (click)="scrobbleSingle(track)">Scrobble</button>
-								</td>
-								<td class="track-number-cell">{{track.number}}.</td>
-								<td><span class="track-name">{{getTrackName(track)}}</span></td>
-								<td class="artist-cell"><span class="artist-name">{{getArtistName(track)}}</span></td>
-							</tr>
-						</tbody>
-					</table>
+				<h3 class="title is-4">{{getAlbumName(album)}}</h3>
+				<h4 class="subtitle is-5">{{album.artist}}</h4>
+				<div class="container">
+					<button class="button is-primary"
+				(click)="scrobbleAlbum(album)">
+				Scrobble Album</button>
 				</div>
 			</div>
+		</div>
+		<div *ngFor="let disc of album.discs">
+			<table class="table is-fullwidth is-hoverable">
+				<thead *ngIf="album.discs.length > 1">
+					<th><button class="button is-small is-primary"
+					(click)="scrobbleDisc(disc)">
+			Scrobble Disc</button></th>
+					<th></th>
+					<th>Disc {{disc.number}}</th>
+					<th></th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let track of disc.tracks"
+					class="track">
+						<td class="scrobble-cell">
+						  <button class="button is-small is-primary"
+						  (click)="scrobbleSingle(track)">Scrobble</button>
+						</td>
+						<td class="track-number-cell">{{track.number}}.</td>
+						<td><span class="track-name">{{getTrackName(track)}}</span></td>
+						<td class="artist-cell"><span class="artist-name">{{getArtistName(track)}}</span></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </section>

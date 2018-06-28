@@ -59,6 +59,7 @@ export class LastFmService {
       params['artist['+i+']'] = track.artist[Object.keys(track.artist)[0]];
       params['timestamp['+i+']'] = timestamp;
       params['track['+i+']'] = track.name[Object.keys(track.name)[0]];
+      params['album['+i+']'] = track.album[Object.keys(track.album)[0]];
     });
     let signature = this.getSignature(method, params);
     params['api_sig'] = signature;

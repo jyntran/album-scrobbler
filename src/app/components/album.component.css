@@ -11,11 +11,12 @@
 
 td.scrobble-cell
 {
-	width: 96px;
+	width: 120px;
 }
 
 td.track-number-cell
 {
+	text-align: right;
 	width: 48px;
 }
 
