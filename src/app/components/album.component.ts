@@ -35,15 +35,31 @@ export class AlbumComponent implements OnInit {
 		return track.artist[this.currentLangArtist];
 	}
 
-	scrobbleSingle(track: Track) {
+	formTrack(track: Track) {
 		let name = {};
 		name[this.currentLangTrack] = this.getTrackName(track);
 		let artist = {};
 		artist[this.currentLangArtist] = this.getArtistName(track);
-		this.scrobbleService.onScrobble(new Track({
+		return new Track({
 			name: name,
 			artist: artist,
 			number: track.number
-		}));
+		});
+	}
+
+	scrobbleSingle(track: Track) {
+		this.scrobbleService.onScrobble([this.formTrack(track)]);
+	}
+
+	scrobbleDisc(disc: Disc) {
+		let tracks = disc.tracks.map((track) => {
+			return this.formTrack(track);
+		});
+		if (tracks.length <= 50) {
+			this.scrobbleService.onScrobble(tracks);
+		} else {
+			this.scrobbleService.onScrobble(tracks.slice(0, 50));
+			this.scrobbleService.onScrobble(tracks.slice(49, 99));
+		}
 	}
 }
