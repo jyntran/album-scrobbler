@@ -8,10 +8,11 @@ import { Config } from '../../assets/config';
 
 @Injectable()
 export class LastFmService {
-	readonly authURL = "http://www.last.fm/api/auth/";
-	readonly apiURL = "http://ws.audioscrobbler.com/2.0/";
-	apiKey: string;
-	apiSecret: string;
+  apiKey: string;
+  apiSecret: string;
+  authURL: string;
+  apiURL: string;
+  callbackURL: string;
 
   constructor(
   	private http: HttpClient,
@@ -19,11 +20,14 @@ export class LastFmService {
   	private authService: AuthService
   ) {
   	this.apiKey = Config['apiKey'];
-  	this.apiSecret = Config['apiSecret'];
+    this.apiSecret = Config['apiSecret'];
+    this.authURL = Config['authURL'];
+    this.apiURL = Config['apiURL'];
+    this.callbackURL = Config['callbackURL'];
   }
 
   requestAuth() {
-  	window.location.replace(this.authURL + "?api_key=" + this.apiKey + "&cb=http://albumscrobbler.surge.sh/callback");
+  	window.location.replace(this.authURL + "?api_key=" + this.apiKey + "&cb=" + this.callbackURL);
   }
 
   fetchSession(token: string) {
@@ -63,7 +67,15 @@ export class LastFmService {
     return this.http.post(url, httpParams);
   }
 
-  getSignature(method: string, params: Object) {
+  private encode(value: any) {
+    return unescape(encodeURIComponent(value));
+  }
+
+  private md5(str: string) {
+    return this.md5Service.createHash(str);
+  }
+
+  private getSignature(method: string, params: Object) {
     let signature = "";
     let keys = [];
     for (var key in params) {
@@ -71,13 +83,9 @@ export class LastFmService {
     }
     for (var i in keys.sort()) {
       key = keys[i];
-      signature += unescape(encodeURIComponent(key)) + unescape(encodeURIComponent(params[key]));
+      signature += this.encode(key) + this.encode(params[key]);
     }
     signature += this.apiSecret;
     return this.md5(signature);
-  }
-
-  md5(str: string) {
-  	return this.md5Service.createHash(str);
   }
 }

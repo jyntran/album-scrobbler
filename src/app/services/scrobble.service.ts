@@ -20,8 +20,6 @@ export class ScrobbleService {
   	this.lastFmService.scrobble(tracks)
   	.subscribe(
       result => {
-  		  //console.log(result)
-        //this.success = '"' + track.name + '" by ' + track.artist + ' was successfully scrobbled!';
         this.success = 'Track(s) successfully scrobbled!';
       },
       error  => {
