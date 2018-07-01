@@ -7,17 +7,21 @@ export class SearchService {
 
   constructor(private http: HttpClient) {}
 
-  findITunesAlbum(url: string) {
+  findITunesAlbum(url: string, isRegional: boolean) {
   	let match = url.match(Regex.itunes);
   	let id = match[5];
   	let country = match[3];
-  	let itunesURL = 'https://itunes.apple.com/lookup?id=' + id + '&entity=song&country=' + country;
-    if (country == 'jp') {
+    let region = isRegional ? country + '/' : '';
+  	let itunesURL = 'https://itunes.apple.com/'
+      + region
+      + 'lookup?id=' + id + '&entity=song&limit=150';
+    if (isRegional && country == 'jp') {
       itunesURL += '&lang=ja_jp'
     }
   	let headers = {
   		"Content-Type": "text/plain"
   	}
+    console.log(itunesURL)
   	return this.http.get(itunesURL, {headers: headers});
   }
 

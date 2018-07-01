@@ -29,6 +29,15 @@
 			  </div>
 			  <p class="help"></p>
 			</div>
+			<div class="field" *ngIf="currentSite=='iTunes'">
+				<label class="label">
+					<input type="checkbox" class="checkbox"
+					name="isRegional"
+					[ngModel]="isRegional"
+					(ngModelChange)="onRegionalChange($event)">
+					Get album's regional data (experimental)
+				</label>
+			</div>
 		  <div class="field">
 			  <div class="control">
 				  <button class="button is-primary">Search</button>
@@ -37,7 +46,7 @@
 			</div>
 		</form>
 
-		<form *ngIf="album"
+		<form *ngIf="album && currentSite!='iTunes'"
 			#scrobbleForm="ngForm"
 			(ngSubmit)="onScrobble()">
 			<hr>
@@ -79,11 +88,6 @@
 				  </select>
 				</div>
 			  </label>
-			</div>
-			<div class="field">
-			  <div class="control">
-				  <button disabled class="button is-primary">Scrobble entire album</button>
-				</div>
 			</div>
 		</form>
 

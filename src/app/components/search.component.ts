@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit{
 	];
 	currentSite = 'iTunes';
 	url: string = "";
+	isRegional: boolean = false;
 	album: Album;
 
 	@Input() langTitle: Array<string> = []
@@ -41,6 +42,10 @@ export class SearchComponent implements OnInit{
 
 	onChange(newVal: string) {
 		this.url = newVal;
+	}
+
+	onRegionalChange(newVal: boolean) {
+		this.isRegional = newVal;
 	}
 
 	onLangTitleChange(newVal: string) {
@@ -78,15 +83,15 @@ export class SearchComponent implements OnInit{
 		this.isLoading = true;
 		let host = url.match(Regex.hostname)[1];
 		if (this.isITunes(host)) {
-	  		this.searchService.findITunesAlbum(url)
+	  		this.searchService.findITunesAlbum(url, this.isRegional)
 	  			.subscribe((data: any) => {
 		  			this.album = this.createITunesAlbum(data.results);
 		  			this.currentLangTitle = this.album.langTitle[0];
 		  			this.currentLangTrack = this.album.langTrack[0];
 		  			this.currentLangArtist = this.album.langArtist[0];
+		  			this.isLoading = false;
 		  		}, error => {
-		  			this.error = error;
-		  		}, () => {
+		  			this.error = error.message;
 		  			this.isLoading = false;
 		  		})
 		} else if (this.isVGMDb(host)) {
@@ -96,9 +101,9 @@ export class SearchComponent implements OnInit{
 		  			this.currentLangTitle = this.album.langTitle[0];
 		  			this.currentLangTrack = this.album.langTrack[0];
 		  			this.currentLangArtist = this.album.langArtist[0];
+		  			this.isLoading = false;
 		  		}, error => {
 		  			this.error = error;
-		  		}, () => {
 		  			this.isLoading = false;
 		  		})
 		} else {
@@ -138,6 +143,7 @@ export class SearchComponent implements OnInit{
 	});
   	return new Album({
   		name: name,
+  		artist: '-',
   		discs: discs,
   		artwork: albumData.picture_thumb,
   		langTitle: langTitle,
